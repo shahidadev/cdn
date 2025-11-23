@@ -73,6 +73,7 @@ function getRandomVideoId() {
 async function loadVideoIds() {
     try {
         const response = await fetch(`https://shahidadev.github.io/cdn/yt-ads/v-id.json?_=${new Date().getTime()}`);
+
         videoIds = await response.json();
     } catch (error) {
         console.error('Error loading video IDs:', error);
