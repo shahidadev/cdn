@@ -1,3 +1,25 @@
+// Create a <style> element
+const style = document.createElement('style');
+style.innerHTML = `
+    @keyframes breathing {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-3px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    .breathing-effect {
+        animation: breathing 1s infinite;
+    }
+`;
+// Append the <style> element to the document's <head>
+document.head.appendChild(style);
+
 // Create and style the main container
 const mainContainer = document.createElement('div');
 mainContainer.style.position = 'fixed';
@@ -108,7 +130,7 @@ async function onYouTubeIframeAPIReady() {
                 'iv_load_policy': 3,
                 'autohide': 1,
                 'wmode': 'opaque',
-                'mute': 0 // To mute the video, change this to 1
+                'mute': 1 // To mute the video, change this to 1
             },
             events: {
                 'onReady': onPlayerReady,
@@ -133,6 +155,7 @@ function onPlayerReady(event) {
 // 5. The API calls this function when the player's state changes.
 function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
+        mainContainer.classList.add('breathing-effect');
         event.target.setPlaybackQuality('small');
         // Start tracking progress
         progressTrackerInterval = setInterval(() => {
@@ -142,6 +165,7 @@ function onPlayerStateChange(event) {
             }));
         }, 1000);
     } else {
+        mainContainer.classList.remove('breathing-effect');
         // Stop tracking progress if not playing
         clearInterval(progressTrackerInterval);
     }
